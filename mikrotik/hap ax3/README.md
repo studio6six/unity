@@ -3,6 +3,8 @@
 
 Specifications
 
+| name  | description |
+| ------------- | ------------- |
+| Product Code | C53UiG+5HPaxD2HPaxD  |
+| Content Cell  | Content Cell  |
 
-| name | description |
-| Product code | | C53UiG+5HPaxD2HPaxD |
