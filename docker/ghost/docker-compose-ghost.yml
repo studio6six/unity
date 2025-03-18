@@ -3,7 +3,9 @@ version: "3" # Use Docker Compose version 3
 services:
   ghost:
     image: ghost:latest # Use the Ghost Docker image 	linux/arm64/v8?
-    restart: always 
+    restart: always
+    ports:
+      - 8080:2368 
     environment:
       - NODE_ENV=development
       - database__client=mysql
@@ -11,25 +13,30 @@ services:
       - database__connection__user=ghost
       - database__connection__password=portainer
       - database__connection__database=ghost
-      - url=http://[YOUR_IP]:2368 # Set the base URL for the Ghost application
+      - url=url: http://localhost:8080:2368 # Set the base URL for the Ghost application
     volumes:
       - ghost-content:/var/lib/ghost/content
-    ports:
-      - "2368:2368" # Map port 2368 from the host to port 2368 in the container
     depends_on:
       - db
 
   db:
-    image: mysql:8.0 # Use the MySQL Docker image
+    image: mariadb:latest
     restart: always
-    volumes:
-      - mysql-data:/var/lib/mysql # Mount a volume for persistent MySQL data storage
     environment:
-      - MYSQL_USER=ghost # Set the MySQL user
-      - MYSQL_DATABASE=ghost # Set the MySQL database name
-      - MYSQL_PASSWORD=portainer # Set the MySQL user's password
-      - MYSQL_ROOT_PASSWORD=portainer # Set the MySQL root password
+      - MYSQL_USER=ghost
+      - MYSQL_DATABASE=ghost
+      - MYSQL_PASSWORD=portainer
+      - MARIADB_ROOT_PASSWORD=portainer
+    volumes:
+      - mariadb-data:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
 
 volumes:
   ghost-content:
-  mysql-data:
+  mariadb-data:
